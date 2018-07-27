@@ -32,6 +32,8 @@ class EnrichmentMenu extends React.Component {
 
   render(){
 
+    const unrecognized = this.state.unrecognized;
+
     const slider = [
       //set min = 0.0001 to prevent all nodes from being hidden which will occur if min = 0
       h("input",{type:"range",id:'enrichment-p_value-slider',min:0.0001,max:0.05,step:0.0001,defaultValue:0.05,
@@ -43,10 +45,10 @@ class EnrichmentMenu extends React.Component {
       cy.batch(()=>{cy.elements().removeClass('hidden');});
       });
 
-    const unrecognizedTokens = _.isEmpty(this.state.unrecognized) ? "" :
+    const unrecognizedTokens = _.isEmpty(unrecognized) ? "" :
     [
-      h('h3', 'Unrecognized Tokens'),
-      h('div', this.state.unrecognized.join(", "))
+      h('h3', 'Unrecognized Tokens (' + unrecognized.length + ')'),
+      h('div', unrecognized.join(", "))
     ];
 
     return h(Tabs, [

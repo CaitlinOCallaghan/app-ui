@@ -56,6 +56,7 @@ class TokenInput extends React.Component {
             className: 'gene-input-box', // used for css styling
             placeholder: 'Enter one gene per line',
             value: state.inputBoxContents,
+            spellCheck: false,
             onChange: (e) => this.handleChange(e)
           })
         ]),
