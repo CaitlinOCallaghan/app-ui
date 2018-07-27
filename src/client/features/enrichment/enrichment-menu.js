@@ -1,8 +1,16 @@
 const React = require('react');
 const h = require('react-hyperscript');
 const { Tab, Tabs, TabList, TabPanel } = require('react-tabs');
+const _ = require('lodash');
 
 class EnrichmentMenu extends React.Component {
+
+  constructor(props) {
+    super(props);
+    this.state = {
+      unrecognized: this.props.unrecognized
+    };
+  }
 
   /**
    *  @description Hides nodes based on adjusted p_value, determined by on-screen slider
@@ -35,6 +43,12 @@ class EnrichmentMenu extends React.Component {
       cy.batch(()=>{cy.elements().removeClass('hidden');});
       });
 
+    const unrecognizedTokens = _.isEmpty(this.state.unrecognized) ? "" :
+    [
+      h('h3', 'Unrecognized Tokens'),
+      h('div', this.state.unrecognized.join(", "))
+    ];
+
     return h(Tabs, [
       h('div.enrichment-drawer-header', [
         h('h2', 'Enriched Network'),
@@ -42,7 +56,7 @@ class EnrichmentMenu extends React.Component {
           h(Tab, {
             className: 'enrichment-drawer-tab',
             selectedClassName: 'enrichment-drawer-tab-selected'
-            }, 'Legend')
+            }, 'Data')
         ])
       ]),
       h(TabPanel, [
@@ -54,7 +68,8 @@ class EnrichmentMenu extends React.Component {
             h('p', '.05')
           ])
         ]),
-        h('div.enrichment-slider-wrapper', slider)
+        h('div.enrichment-slider-wrapper', slider),
+        h('div.unrecognized-token-container', unrecognizedTokens)
       ])
     ]);
   }
